@@ -10,7 +10,7 @@ type Superficie struct {
 }
 
 func (s *Superficie) Init(r *Reglas) {
-	var mapa [N][M]string
+	var mapa [N][M]string /* crea una matriz de tipo string */
 	s.TamanoN = N
 	s.TamanoM = M
 	s.Mapa = mapa
@@ -18,6 +18,7 @@ func (s *Superficie) Init(r *Reglas) {
 
 }
 
+/* PRINTEO */
 func (s *Superficie) Print() {
 	for i := 0; i < s.TamanoN; i++ {
 		for j := 0; j < s.TamanoM; j++ {

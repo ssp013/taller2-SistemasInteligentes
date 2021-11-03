@@ -1,5 +1,6 @@
 package models
 
+/* Constantes globales */
 const (
 	N        = 20
 	M        = 20
@@ -8,12 +9,14 @@ const (
 	VelLlano = 1.2
 )
 
+/* Struct es decir q atributos tendra esa estructura */
 type Reglas struct {
 	TiempoGiro        float32
 	VelTerrenoAbrupto float32
 	VelTerrenoLano    float32
 }
 
+/* Constructor, no es necesario que lleve, es por temas de automatitation */
 func (r *Reglas) Init() {
 
 	r.TiempoGiro = Giro
