@@ -2,8 +2,8 @@ package models
 
 /* Constantes globales */
 const (
-	N        = 20
-	M        = 20
+	N        = 3
+	M        = 3
 	Giro     = 4.0
 	VelAbr   = 0.5
 	VelLlano = 1.2

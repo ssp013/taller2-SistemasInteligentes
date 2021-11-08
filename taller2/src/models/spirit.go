@@ -7,11 +7,10 @@ type Spirit struct {
 
 //gira hacia arriba y retorna el tiempo que demoro
 
-func (*Spirit) NewSpitit() *Spirit {
+func NewSpitit() *Spirit {
 
-	coordenadas := &Coordenadas{}
 	estado := &Estado{
-		Coordenadas: coordenadas.NewCoordenadas(N, M),
+		Coordenadas: NewCoordenadasRandom(N, M),
 		Orientacion: "Rigth",
 	}
 
@@ -23,18 +22,22 @@ func (*Spirit) NewSpitit() *Spirit {
 	return spirit
 }
 
-func (s *Spirit) girarDown() {
+func (s *Spirit) GirarDown() {
 	s.Icon = "▼"
+	s.Estado.Orientacion = "down"
 }
 
-func (s *Spirit) girarUp() {
+func (s *Spirit) GirarUp() {
 	s.Icon = "▲"
+	s.Estado.Orientacion = "up"
 }
 
-func (s *Spirit) girarRigth() {
+func (s *Spirit) GirarRigth() {
 	s.Icon = "▶"
+	s.Estado.Orientacion = "rigth"
 }
 
-func (s *Spirit) girarLeft() {
+func (s *Spirit) GirarLeft() {
 	s.Icon = "◀"
+	s.Estado.Orientacion = "left"
 }
