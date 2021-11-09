@@ -7,6 +7,8 @@ type Grapho struct {
 type Node struct {
 	Coordenadas *Coordenadas
 	Posicion    *PosicionMapa
+	Orientacion int
+	Recorrido   []*PosicionMapa
 	TopNode     *Node
 	LeftNode    *Node
 	DownNode    *Node
@@ -21,9 +23,12 @@ func (g *Grapho) GenerateGrapho(sup *Superficie, spirit *Spirit) {
 	x, y := spirit.Estado.Coordenadas.GetCoordenadas()
 	pos := sup.Mapa[x][y]
 
+	var array []*PosicionMapa
 	g.root = &Node{
 		Coordenadas: spirit.Estado.Coordenadas,
 		Posicion:    pos,
+		Orientacion: spirit.Estado.Orientacion,
+		Recorrido:   append(array, pos),
 	}
 	generateNodes(g.root, sup)
 }
@@ -34,7 +39,6 @@ func generateNodes(node *Node, sup *Superficie) {
 		/* Posision mapa OBJETO, tenemos aca las coordenadas, value, top, left right */
 		pos := node.Posicion
 		x, y := pos.Coordenadas.GetCoordenadas()
-
 		/*
 			X , Y
 			TOP 	: X - 1, Y
@@ -42,21 +46,26 @@ func generateNodes(node *Node, sup *Superficie) {
 			DOWN 	: X + 1, Y
 			RIGTH 	: X, Y + 1
 		*/
-
 		//PARA IR HACIA ARRIBA
 		xTop := x - 1
 		yTop := y
 
 		if xTop >= 0 {
 			posTop := sup.Mapa[xTop][yTop]
-			if !posTop.ObstacleDown {
+			esta := esta(posTop, node.Recorrido)
+			if !posTop.ObstacleDown && !esta {
+				array := append(node.Recorrido, posTop)
 				node.TopNode = &Node{
 					Coordenadas: NewCoordenadas(xTop, yTop),
 					Posicion:    posTop,
+					Orientacion: OrientacionTop,
+					Recorrido:   array,
 				}
 			} else {
 				node.TopNode = nil
 			}
+		} else {
+			node.TopNode = nil
 		}
 		//OBSTACLES
 		//PARA IR HACIA IZQUIERDA
@@ -65,14 +74,20 @@ func generateNodes(node *Node, sup *Superficie) {
 
 		if yLeft >= 0 {
 			posLeft := sup.Mapa[xLeft][yLeft]
-			if posLeft.ObstacleLeft {
+			esta := esta(posLeft, node.Recorrido)
+			if posLeft.ObstacleRigth && !esta {
+				array := append(node.Recorrido, posLeft)
 				node.LeftNode = &Node{
 					Coordenadas: NewCoordenadas(xLeft, yLeft),
 					Posicion:    posLeft,
+					Orientacion: OrientacionLeft,
+					Recorrido:   array,
 				}
 			} else {
 				node.LeftNode = nil
 			}
+		} else {
+			node.LeftNode = nil
 		}
 
 		//PARA IR HACIA ABAJO
@@ -81,15 +96,21 @@ func generateNodes(node *Node, sup *Superficie) {
 
 		if xDown < sup.TamanoN {
 			posDown := sup.Mapa[xDown][yDown]
-			if !posDown.ObstacleTop {
+			esta := esta(posDown, node.Recorrido)
+			if !posDown.ObstacleTop && !esta {
+				array := append(node.Recorrido, posDown)
 				node.DownNode = &Node{
 					Coordenadas: NewCoordenadas(xDown, yDown),
 					Posicion:    posDown,
+					Orientacion: OrientacionDown,
+					Recorrido:   array,
 				}
 			} else {
 				node.DownNode = nil
 			}
 
+		} else {
+			node.DownNode = nil
 		}
 		//PARA IR HACIA DERECHA
 		xRigth := x
@@ -97,15 +118,21 @@ func generateNodes(node *Node, sup *Superficie) {
 
 		if yRigth < sup.TamanoM {
 			posRigth := sup.Mapa[xRigth][yRigth]
-			if !posRigth.ObstacleLeft {
+			esta := esta(posRigth, node.Recorrido)
+			if !posRigth.ObstacleLeft && !esta {
+				array := append(node.Recorrido, posRigth)
 				node.RigthNode = &Node{
 					Coordenadas: NewCoordenadas(xRigth, yRigth),
 					Posicion:    posRigth,
+					Orientacion: OrientacionRigth,
+					Recorrido:   array,
 				}
 			} else {
 				node.RigthNode = nil
 			}
 
+		} else {
+			node.RigthNode = nil
 		}
 
 		generateNodes(node.TopNode, sup)
@@ -113,20 +140,19 @@ func generateNodes(node *Node, sup *Superficie) {
 		generateNodes(node.DownNode, sup)
 		generateNodes(node.RigthNode, sup)
 	}
+}
 
+func esta(key *PosicionMapa, list []*PosicionMapa) bool {
+
+	for i := 0; i < len(list); i++ {
+		if key != nil && key.Coordenadas.X == list[i].Coordenadas.X && key.Coordenadas.Y == list[i].Coordenadas.Y {
+			return true
+		}
+	}
+	return false
 }
 
 /*
-func notIn(source int, pasos []int) bool {
-	estado := false
-	for i := 0; i < len(pasos); i++ {
-		if source == pasos[i] {
-			estado = true
-		}
-	}
-	return estado
-}
-
 func recursive_dfs(g *Grapho, source int, l []int) []int {
 	estado := notIn(source, l)
 	if !estado {

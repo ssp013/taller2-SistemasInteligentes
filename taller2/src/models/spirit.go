@@ -11,7 +11,7 @@ func NewSpitit() *Spirit {
 
 	estado := &Estado{
 		Coordenadas: NewCoordenadasRandom(N, M),
-		Orientacion: "Rigth",
+		Orientacion: OrientacionRigth,
 	}
 
 	spirit := &Spirit{
@@ -21,6 +21,8 @@ func NewSpitit() *Spirit {
 
 	return spirit
 }
+
+/*
 
 func (s *Spirit) GirarDown() {
 	s.Icon = "▼"
@@ -41,3 +43,5 @@ func (s *Spirit) GirarLeft() {
 	s.Icon = "◀"
 	s.Estado.Orientacion = "left"
 }
+
+*/

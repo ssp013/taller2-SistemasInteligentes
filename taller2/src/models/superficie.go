@@ -14,7 +14,7 @@ const (
 )
 
 type Superficie struct {
-	Mapa    [N][M](*PosicionMapa)
+	Mapa    [N][M]*PosicionMapa
 	TamanoN int
 	TamanoM int
 	Reglas  *Reglas
@@ -37,7 +37,7 @@ func (s *Superficie) Init(r *Reglas) {
 func (s *Superficie) crearPosiciones() {
 	for i := 0; i < s.TamanoN; i++ {
 		for j := 0; j < s.TamanoM; j++ {
-			p := &PosicionMapa{ValueCenter: IconLlano}
+			p := &PosicionMapa{ValueCenter: IconLlano, Coordenadas: *NewCoordenadas(i, j)}
 			s.Mapa[i][j] = p
 		}
 	}
@@ -76,6 +76,7 @@ func (s *Superficie) PosicionarSpirit(spirit *Spirit) {
 	}
 	s.Mapa[x][y].ValueCenter = spirit.Icon
 	spirit.Estado.Coordenadas = c
+	print(c.X, c.Y)
 
 }
 func (s *Superficie) posicionarObstaculos(cantidad int) {

@@ -28,7 +28,17 @@ func main() {
 	//spirit.GirarRigth()
 	superficie.PosicionarSpirit(spirit)
 
-	//superficie.Mapa[sx][sy] = spirit.Icon
 	superficie.Print()
+
+	grapho := models.NewGrapho()
+	grapho.GenerateGrapho(superficie, spirit)
+
+	depthFirst := models.NewDepthFirst(grapho)
+	solucion := depthFirst.Resolver()
+
+	for i := 0; i < len(solucion); i++ {
+		x, y := solucion[i].Coordenadas.GetCoordenadas()
+		println("[", x, y, "]-")
+	}
 
 }
