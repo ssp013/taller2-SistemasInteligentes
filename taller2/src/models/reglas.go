@@ -4,8 +4,8 @@ import "math"
 
 /* Constantes globales */
 const (
-	N        = 3
-	M        = 3
+	N        = 7
+	M        = 7
 	Giro     = 4
 	VelAbr   = 0.5
 	VelLlano = 1.2

@@ -29,7 +29,7 @@ func (s *Superficie) Init(r *Reglas) {
 	s.Reglas = r
 
 	s.crearPosiciones()
-	s.posicionarTerrenoAbrupto(2)
+	s.posicionarTerrenoAbrupto(N)
 	s.posicionarObjetivo()
 	s.posicionarObstaculos(N)
 }
@@ -44,7 +44,8 @@ func (s *Superficie) crearPosiciones() {
 }
 
 func (s *Superficie) posicionarTerrenoAbrupto(cantidad int) {
-	for i := 0; i < cantidad; i++ {
+	cantidadAbrupto := randNum(cantidad) + cantidad/2
+	for i := 0; i < cantidadAbrupto; i++ {
 		c := NewCoordenadasRandom(N, M)
 		x, y := c.GetCoordenadas()
 		for s.Mapa[x][y].ValueCenter == IconAbr {
@@ -76,11 +77,10 @@ func (s *Superficie) PosicionarSpirit(spirit *Spirit) {
 	}
 	s.Mapa[x][y].ValueCenter = spirit.Icon
 	spirit.Estado.Coordenadas = c
-	print(c.X, c.Y)
 
 }
 func (s *Superficie) posicionarObstaculos(cantidad int) {
-	cantidadVertical := randNum(cantidad)
+	cantidadVertical := randNum(cantidad) + cantidad/2
 
 	for i := 0; i < cantidadVertical; i++ {
 		c := NewCoordenadasRandom(N, M)
@@ -99,7 +99,7 @@ func (s *Superficie) posicionarObstaculos(cantidad int) {
 
 	}
 
-	cantidadHorizontal := randNum(cantidad)
+	cantidadHorizontal := randNum(cantidad) + cantidad/2
 	for j := 0; j < cantidadHorizontal; j++ {
 		c := NewCoordenadasRandom(N, M)
 		x, y := c.GetCoordenadas()
@@ -122,11 +122,11 @@ func (s *Superficie) posicionarObstaculos(cantidad int) {
 func (s *Superficie) Print() {
 
 	for a := 0; a < s.TamanoM; a++ {
-		fmt.Print("\t", a+1)
+		fmt.Print("\t", a)
 	}
 	fmt.Println()
 	for i := 0; i < s.TamanoN; i++ {
-		fmt.Print(" ", i+1, "\t")
+		fmt.Print(" ", i, "\t")
 		for j := 0; j < s.TamanoM; j++ {
 			value := fmt.Sprint(s.Mapa[i][j].ValueCenter)
 			if s.Mapa[i][j].ObstacleRigth {

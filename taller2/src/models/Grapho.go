@@ -75,7 +75,7 @@ func generateNodes(node *Node, sup *Superficie) {
 		if yLeft >= 0 {
 			posLeft := sup.Mapa[xLeft][yLeft]
 			esta := esta(posLeft, node.Recorrido)
-			if posLeft.ObstacleRigth && !esta {
+			if !posLeft.ObstacleRigth && !esta {
 				array := append(node.Recorrido, posLeft)
 				node.LeftNode = &Node{
 					Coordenadas: NewCoordenadas(xLeft, yLeft),
@@ -151,14 +151,3 @@ func esta(key *PosicionMapa, list []*PosicionMapa) bool {
 	}
 	return false
 }
-
-/*
-func recursive_dfs(g *Grapho, source int, l []int) []int {
-	estado := notIn(source, l)
-	if !estado {
-		l = append(l, source)
-
-	}
-	return l
-}
-*/
